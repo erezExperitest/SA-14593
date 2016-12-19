@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 public class Bugs {
     private String host = "localhost";
     private int port = 8889;
-    private String projectBaseDirectory = "C:\\Users\\erez.akri.experitest\\workspace\\project31";
+    private String projectBaseDirectory = "/Users/erez.akri/workspace/project2";
     Client client = null;
 
     @Before
@@ -31,6 +31,7 @@ public class Bugs {
         long iteration=0;
 //        client.waitForDevice("@os='ios'", 30000);
         client.setDevice("ios_app:iPhone");
+        client.openDevice();
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs)<4) {
@@ -83,6 +84,7 @@ public class Bugs {
         long iteration=0;
 //        client.waitForDevice("@os='ios'", 30000);
         client.setDevice("ios_app:Ipad 10_2");
+        client.openDevice();
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs)<4) {
@@ -130,12 +132,13 @@ public class Bugs {
         }
     }
 
-    @Ignore
+    @Test
     public void androidTest1() {
 
         long iteration = 0;
 //        client.waitForDevice("@os='android'", 30000);
         client.setDevice("adb:SM-T813");
+        client.openDevice();
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs) < 4) {
@@ -180,6 +183,7 @@ public class Bugs {
 
 //        client.waitForDevice("@os='android'", 30000);
         client.setDevice("adb:SM-G920F");
+        client.openDevice();
         long startTimeMs = System.currentTimeMillis();
         long iteration=0;
 
