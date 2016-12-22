@@ -1,5 +1,6 @@
 import com.experitest.client.Client;
 import com.google.code.tempusfugit.concurrency.ConcurrentTestRunner;
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -22,7 +23,7 @@ public class Bugs {
         client = new Client(host, port, true);
         //client.setClientDebugStatus(true);
         client.setProjectBaseDirectory(projectBaseDirectory);
-//        client.setReporter("xml", "reports", "test" + Thread.currentThread().getId());
+        client.setReporter("xml", "reports", "test" + Thread.currentThread().getId());
 
     }
 
@@ -30,51 +31,67 @@ public class Bugs {
     public void iOSTest1(){
         long iteration=0;
 //        client.waitForDevice("@os='ios'", 30000);
-        client.setDevice("ios_app:iPhone");
-        client.openDevice();
+        client.setDevice("ios_app:#B0107 iPhone7+");
+//        client.openDevice();
+        client.deviceAction("Portrait");
+        client.deviceAction("Unlock");
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs)<4) {
 
-            if (client.install("com.experitest.ExperiBank", true, false)) {
-                // If statement
-            }
-            client.launch("com.experitest.ExperiBank", true, true);
-            if (client.waitForElement("NATIVE", "placeholder=Username", 0, 120000)) {
-                // If statement
-            }
-            client.elementSendText("NATIVE", "placeholder=Username", 0, "company");
-            if (client.waitForElement("NATIVE", "placeholder=Password", 0, 10000)) {
-                // If statement
-            }
-            client.elementSendText("NATIVE", "placeholder=Password", 0, "company");
-            client.sendText("{ENTER}");
-            client.click("NATIVE", "accessibilityLabel=makePaymentButton", 0, 1);
-            if (client.waitForElement("NATIVE", "accessibilityLabel=countryButton", 0, 10000)) {
-                // If statement
-            }
-            client.click("TEXT", "Select", 0, 1);
-            client.elementListSelect("", "text=Tanzania", 0, false);
-            client.click("NATIVE", "xpath=//*[@accessibilityLabel='Tanzania']", 0, 1);
-            if (client.waitForElement("NATIVE", "accessibilityLabel=cancelButton", 0, 120000)) {
-                // If statement
-            }
-            client.click("TEXT", "Cancel", 0, 1);
-            if (client.waitForElement("TEXT", "Logout", 0, 10000)) {
-                // If statement
-            }
-            client.click("NATIVE", "accessibilityLabel=logoutButton", 0, 1);
-            client.launch("safari:http://www.wikipedia.org", true, false);
-            if (client.waitForElement("WEB", "id=searchInput", 0, 120000)) {
-                // If statement
-            }
-            client.elementSendText("WEB", "id=searchInput", 0, "expert");
-            //client.click("WEB", "name=go", 0, 1);
-            client.click("WEB", "xpath=//*[@nodeName='I' and ./parent::*[@nodeName='BUTTON']]", 0, 1);
 
             iteration++;
-            System.out.println(Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs) );
-            System.out.println(Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+            System.out.println("\n"+Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs) );
+            System.out.println("\n"+Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+            try {
+
+
+                if (client.install("com.experitest.ExperiBank", true, false)) {
+                    // If statement
+                }
+                client.launch("com.experitest.ExperiBank", true, true);
+                if (client.waitForElement("NATIVE", "placeholder=Username", 0, 120000)) {
+                    // If statement
+                }
+                client.elementSendText("NATIVE", "placeholder=Username", 0, "company");
+                if (client.waitForElement("NATIVE", "placeholder=Password", 0, 10000)) {
+                    // If statement
+                }
+                client.elementSendText("NATIVE", "placeholder=Password", 0, "company");
+                client.sendText("{ENTER}");
+                client.click("NATIVE", "accessibilityLabel=makePaymentButton", 0, 1);
+                if (client.waitForElement("NATIVE", "accessibilityLabel=countryButton", 0, 10000)) {
+                    // If statement
+                }
+                client.click("TEXT", "Select", 0, 1);
+                client.elementListSelect("", "text=Tanzania", 0, false);
+                client.click("NATIVE", "xpath=//*[@accessibilityLabel='Tanzania']", 0, 1);
+                if (client.waitForElement("NATIVE", "accessibilityLabel=cancelButton", 0, 120000)) {
+                    // If statement
+                }
+                client.click("TEXT", "Cancel", 0, 1);
+                if (client.waitForElement("TEXT", "Logout", 0, 10000)) {
+                    // If statement
+                }
+                client.click("NATIVE", "accessibilityLabel=logoutButton", 0, 1);
+                client.launch("safari:http://www.wikipedia.org", true, false);
+                if (client.waitForElement("WEB", "id=searchInput", 0, 120000)) {
+                    // If statement
+                }
+                client.elementSendText("WEB", "id=searchInput", 0, "expert");
+                //client.click("WEB", "name=go", 0, 1);
+                client.click("WEB", "xpath=//*[@nodeName='I' and ./parent::*[@nodeName='BUTTON']]", 0, 1);
+            }catch (Exception e) {
+                System.err.println("\n"+e.getMessage());
+                e.printStackTrace();//ystem.out.println("\n"+e.getStackTrace());
+                System.err.println("\niteration failed\n");
+                client.setDevice("ios_app:#B0107 iPhone7+");
+//                client.openDevice();
+                client.deviceAction("Portrait");
+                client.deviceAction("Unlock");
+                continue;
+
+            }
 
         }
     }
@@ -84,10 +101,15 @@ public class Bugs {
         long iteration=0;
 //        client.waitForDevice("@os='ios'", 30000);
         client.setDevice("ios_app:Ipad 10_2");
-        client.openDevice();
+//        client.openDevice();
+        client.deviceAction("Portrait");
+        client.deviceAction("Unlock");
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs)<4) {
+            try {
+
+
 
             if (client.install("com.experitest.ExperiBank", true, false)) {
                 // If statement
@@ -126,9 +148,20 @@ public class Bugs {
             client.click("WEB", "xpath=//*[@nodeName='I' and ./parent::*[@nodeName='BUTTON']]", 0, 1);
 
             iteration++;
-            System.out.println(Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs) );
-            System.out.println(Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+            System.out.println("\n"+Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(),startTimeMs) );
+            System.out.println("\n"+Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
+            }catch (Exception e) {
+                System.err.println("\n"+e.getMessage());
+                e.printStackTrace();
+                System.err.println("\niteration failed\n");
+                client.setDevice("ios_app:Ipad 10_2");
+//                client.openDevice();
+                client.deviceAction("Portrait");
+                client.deviceAction("Unlock");
+                continue;
+
+            }
         }
     }
 
@@ -137,11 +170,17 @@ public class Bugs {
 
         long iteration = 0;
 //        client.waitForDevice("@os='android'", 30000);
-        client.setDevice("adb:SM-T813");
-        client.openDevice();
+        client.setDevice("adb:Nexus 5X");
+//        client.openDevice();
+        client.deviceAction("Portrait");
+        client.deviceAction("Unlock");
         long startTimeMs = System.currentTimeMillis();
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs) < 4) {
+            try {
+
+
+
             if (client.install("com.experitest.ExperiBank/.LoginActivity", true, false)) {
                 // If statement
             }
@@ -171,9 +210,21 @@ public class Bugs {
             client.swipe("Down", 206, 1225);
 
             iteration++;
-            System.out.println(Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs));
-            System.out.println(Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-        }
+            System.out.println("\n"+Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs));
+            System.out.println("\n"+Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+
+            }catch (Exception e) {
+                System.err.println("\n"+e.getMessage());
+                e.printStackTrace();
+                System.err.println("\niteration failed\n");
+                client.setDevice("adb:Nexus 5X");
+//                client.openDevice();
+                client.deviceAction("Portrait");
+                client.deviceAction("Unlock");
+                continue;
+
+            }
+            }
     }
 
 
@@ -182,12 +233,18 @@ public class Bugs {
     public void androidTest2() {
 
 //        client.waitForDevice("@os='android'", 30000);
-        client.setDevice("adb:SM-G920F");
-        client.openDevice();
+        client.setDevice("adb:MI PAD");
+//        client.openDevice();
+        client.deviceAction("Portrait");
+        client.deviceAction("Unlock");
         long startTimeMs = System.currentTimeMillis();
         long iteration=0;
 
         while (calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs) < 4) {
+
+            try {
+
+
             if (client.install("com.experitest.ExperiBank/.LoginActivity", true, false)) {
                 // If statement
             }
@@ -217,9 +274,22 @@ public class Bugs {
             client.swipe("Down", 206, 1225);
 
             iteration++;
-            System.out.println(Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs));
-            System.out.println(Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-        }
+            System.out.println("\n"+Thread.currentThread().getName() +" "+ client.getDeviceProperty("device.name") + " Iteration No. " + iteration + " ; Elapsed time is: " + calcElapsedTimeInHours(System.currentTimeMillis(), startTimeMs));
+            System.out.println("\n"+Thread.currentThread().getName() + "used memory" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+
+            }catch (Exception e) {
+                System.err.println("\n"+e.getMessage());
+                e.printStackTrace();
+                System.err.println("\niteration failed\n");
+                client.setDevice("adb:MI PAD");
+//                client.openDevice();
+                client.deviceAction("Portrait");
+                client.deviceAction("Unlock");
+                continue;
+
+            }
+            }
+
     }
 
 
@@ -237,7 +307,7 @@ public class Bugs {
     public void tearDown(){
         // Generates a report of the test case.
         // For more information - https://docs.experitest.com/display/public/SA/Report+Of+Executed+Test
-//        client.generateReport(false);
+        client.generateReport(false);
         // Releases the client so that other clients can approach the agent in the near future. 
         client.releaseClient();
     }
